@@ -6,8 +6,6 @@ trigger: always_on
 
 > Six sprints. Each sprint is one week. Every sprint ends with a working, deployable increment. No sprint scope creeps into the next.
 
----
-
 ## Sprint Overview
 
 | Sprint | Focus           | Deliverable                                |
@@ -18,8 +16,6 @@ trigger: always_on
 | 4      | Resume Pipeline | .tex edit, GitHub push, PDF compile        |
 | 5      | Dashboard       | Angular UI, job cards, approve/reject flow |
 | 6      | Apply Layer     | Playwright apply, Nodemailer, tracking     |
-
----
 
 ## Sprint 1 — Foundation
 
@@ -71,8 +67,6 @@ trigger: always_on
 - Swagger UI renders at `/api/docs` with all stub routes documented
 - `POST /api/auth/login` returns a session cookie
 
----
-
 ## Sprint 2 — Scrapers
 
 **Goal:** Fresh jobs flowing into the database every hour from all four platforms.
@@ -123,8 +117,6 @@ trigger: always_on
 - `GET /api/jobs?status=PENDING` returns newly scraped listings
 - BullMQ Board shows completed `scrape-jobs` tasks with no failures
 
----
-
 ## Sprint 3 — Intelligence Layer
 
 **Goal:** Every pending job is scored, researched, and has a tailored resume version ready for review.
@@ -174,8 +166,6 @@ trigger: always_on
 - Company research brief contains all five required sections
 - `Application` record created with non-null `atsScore`, `fitScore`, `aiReasoning`, `gapAnalysis`
 
----
-
 ## Sprint 4 — Resume Pipeline
 
 **Goal:** Every tailored resume compiles to a clean PDF, accessible from the dashboard.
@@ -215,8 +205,6 @@ trigger: always_on
 - Editing `.tex` via `PATCH` triggers a fresh compile and updates the PDF URL
 - Base resume on `main` branch is never modified
 
----
-
 ## Sprint 5 — Dashboard (Angular)
 
 **Goal:** A fully functional review dashboard where every job can be inspected and actioned.
@@ -254,8 +242,6 @@ trigger: always_on
 - Resume diff clearly shows changed lines
 - PDF preview renders the compiled resume inline
 - Settings page saves role config and reflects changes on next scrape cycle
-
----
 
 ## Sprint 6 — Apply Layer
 
@@ -303,8 +289,6 @@ trigger: always_on
 - `Application.appliedAt` timestamp is accurate
 - Email apply sends successfully with PDF attached and AI cover note in body
 
----
-
 ## Definition of Done (All Sprints)
 
 A sprint is only done when all of the following are true:
@@ -317,7 +301,3 @@ A sprint is only done when all of the following are true:
 - Swagger spec updated to reflect any new or changed endpoints
 - Frontend codegen re-run after any backend API change
 - Changes deployed to Railway and verified in production
-
----
-
-_Each sprint is a working system, not a collection of in-progress parts. Ship something real every week._
