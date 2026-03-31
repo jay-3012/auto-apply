@@ -49,7 +49,7 @@ const startServer = async (): Promise<void> => {
     // In dev it'll crash here if DB is not running, which is expected.
     await sequelize.authenticate();
     console.log('Database connected.');
-    
+
     // In dev, sync models (in production we would use migrations)
     await sequelize.sync({ alter: true });
 
