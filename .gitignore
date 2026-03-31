@@ -1,0 +1,26 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.angular/
+
+# Generated API client — regenerate with npm run codegen
+src/generated/api/
+
+# Cypress artifacts
+cypress/screenshots/
+cypress/videos/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
