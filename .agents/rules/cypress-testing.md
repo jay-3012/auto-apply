@@ -6,8 +6,6 @@ trigger: always_on
 
 > Cypress covers end-to-end and component testing for the Angular dashboard. A test script is written automatically at the end of every sprint covering everything delivered in that sprint. Tests are never written retroactively for old sprints — they ship with the sprint.
 
----
-
 ## Setup & Configuration
 
 ### Installation
@@ -120,8 +118,6 @@ Cypress.Commands.add("interceptApi", (method, path, fixture) => {
 <div data-cy="ats-score">{{ job.atsScore }}</div>
 ```
 
----
-
 ## Sprint 1 Tests — Foundation
 
 **File:** `cypress/e2e/sprint-1/foundation.cy.ts`
@@ -167,8 +163,6 @@ describe("Sprint 1 — Foundation", () => {
   });
 });
 ```
-
----
 
 ## Sprint 2 Tests — Scrapers
 
@@ -216,8 +210,6 @@ describe("Sprint 2 — Scrapers", () => {
 });
 ```
 
----
-
 ## Sprint 3 Tests — Intelligence
 
 **File:** `cypress/e2e/sprint-3/intelligence.cy.ts`
@@ -264,8 +256,6 @@ describe("Sprint 3 — Intelligence", () => {
 });
 ```
 
----
-
 ## Sprint 4 Tests — Resume Pipeline
 
 **File:** `cypress/e2e/sprint-4/resume-pipeline.cy.ts`
@@ -308,8 +298,6 @@ describe("Sprint 4 — Resume Pipeline", () => {
   });
 });
 ```
-
----
 
 ## Sprint 5 Tests — Dashboard
 
@@ -377,8 +365,6 @@ describe("Sprint 5 — Dashboard", () => {
 });
 ```
 
----
-
 ## Sprint 6 Tests — Apply Layer
 
 **File:** `cypress/e2e/sprint-6/apply.cy.ts`
@@ -424,28 +410,7 @@ describe("Sprint 6 — Apply Layer", () => {
 
 ## CI Integration
 
-```yaml
-# .github/workflows/cypress.yml
-name: Cypress Tests
-on: [push, pull_request]
-jobs:
-  cypress:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "20" }
-      - run: npm ci
-      - uses: cypress-io/github-action@v6
-        with:
-          start: npm run start:test
-          wait-on: "http://localhost:4200"
-```
-
 - `cypress run` must pass with zero failures before any PR merges to `main`
 - Failure screenshots uploaded as CI artifacts automatically
 - Run current + previous sprint specs in CI — full suite runs weekly
-
----
-
-_Tests are not an afterthought. They are the proof that the sprint is done._
+  _Tests are not an afterthought. They are the proof that the sprint is done._
