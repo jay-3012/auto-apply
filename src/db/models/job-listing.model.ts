@@ -1,5 +1,6 @@
-import { Model, Table, Column, DataType } from 'sequelize-typescript';
+import { Model, Table, Column, DataType, HasOne } from 'sequelize-typescript';
 import { JobStatus, Platform } from '#types/db.types.js';
+import { Application } from './application.model.js';
 
 export interface JobListingAttributes {
   id: string;
@@ -8,7 +9,9 @@ export interface JobListingAttributes {
   platform: Platform;
   url: string;
   jdText: string;
-  salary?: string | null;
+  salary: string | null;
+  location: string | null;
+  externalId: string;
   status: JobStatus;
 }
 
@@ -41,6 +44,15 @@ export class JobListing extends Model<JobListingAttributes, JobListingCreationAt
   @Column({ type: DataType.STRING, allowNull: true })
   declare salary: string | null;
 
+  @Column({ type: DataType.STRING, allowNull: true })
+  declare location: string | null;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare externalId: string;
+
   @Column({ type: DataType.ENUM(...Object.values(JobStatus)), allowNull: false, defaultValue: JobStatus.PENDING })
   declare status: JobStatus;
+
+  @HasOne(() => Application, 'jobId')
+  declare application: Application | null;
 }

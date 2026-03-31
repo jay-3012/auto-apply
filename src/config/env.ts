@@ -14,9 +14,15 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   DATABASE_URL: z.string().url(),
   REDIS_URL: z.string().url(),
+  SESSION_SECRET: z.string().default('dev-session-secret-change-in-production'),
+  SEARCH_LOCATION: z.string().default('Bangalore'),
+  SCRAPE_CONCURRENCY: z.string().transform(Number).default(2),
   GROQ_API_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().optional(),
   GITHUB_TOKEN: z.string().optional(),
+  RESUME_REPO_OWNER: z.string().default('jay-3012'),
+  RESUME_REPO_NAME: z.string().default('auto-apply-resume'),
+  SEARXNG_URL: z.string().optional(),
 });
 
 export const env = envSchema.parse(process.env);

@@ -12,14 +12,28 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
     "outDir": "dist",
     "rootDir": "src",
     "paths": {
-      "#config/*": ["./src/config/*"],
-      "#db/*": ["./src/db/*"],
-      "#types/*": ["./src/types/*"],
-      "#utils/*": ["./src/utils/*"],
-      "#queues/*": ["./src/queues/*"]
+      "#config/*": [
+        "./src/config/*"
+      ],
+      "#db/*": [
+        "./src/db/*"
+      ],
+      "#types/*": [
+        "./src/types/*"
+      ],
+      "#utils/*": [
+        "./src/utils/*"
+      ],
+      "#queues/*": [
+        "./src/queues/*"
+      ]
     }
-  }
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

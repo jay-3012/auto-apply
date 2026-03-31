@@ -1,0 +1,36 @@
+name: Compile Resume
+on:
+  push:
+    branches:
+      - 'job-*'
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Tectonic
+        uses: tectonic-typesetting/setup-tectonic@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compile PDF
+        run: tectonic resume.tex
+
+      - name: Upload PDF Artifact
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: tailored-resume-${{ github.sha }}
+          path: resume.pdf
+
+      - name: Report back to AI Job Applier Backend
+        if: success()
+        run: |
+          # Use your backend URL here. For self-hosted on Railway, it's something like https://auto-apply-production.up.railway.app
+          # BACKEND_URL should be a GitHub Secret if not public.
+          curl -X POST "${{ secrets.BACKEND_URL }}/api/resumes/compiled" \
+            -H "Content-Type: application/json" \
+            -d "{\"branchName\": \"${{ github.ref_name }}\", \"artifactUrl\": \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}"
