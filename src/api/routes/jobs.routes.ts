@@ -1,7 +1,28 @@
 import { Router } from 'express';
-import { listJobs, getJob } from '../controllers/jobs.controller.js';
+import { listJobs, getJob, getDashboardStats } from '../controllers/jobs.controller.js';
 
 const router = Router();
+
+/**
+ * @swagger
+ * /jobs/stats:
+ *   get:
+ *     summary: Get dashboard statistics
+ *     description: Returns counts of jobs in various stages.
+ *     responses:
+ *       200:
+ *         description: Stats object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 reviewCount: { type: integer }
+ *                 appliedCount: { type: integer }
+ *                 activeRolesCount: { type: integer }
+ *                 failedCount: { type: integer }
+ */
+router.get('/stats', getDashboardStats);
 
 /**
  * @swagger

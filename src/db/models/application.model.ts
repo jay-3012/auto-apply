@@ -2,6 +2,8 @@ import { Model, Table, Column, DataType, ForeignKey, BelongsTo } from 'sequelize
 import { ApplicationDecision, ApplicationResult } from '#types/db.types.js';
 import { JobListing } from './job-listing.model.js';
 import { Resume } from './resume.model.js';
+import type { JobListing as IJobListing } from './job-listing.model.js';
+import type { Resume as IResume } from './resume.model.js';
 
 export interface ApplicationAttributes {
   id: string;
@@ -61,8 +63,8 @@ export class Application extends Model<ApplicationAttributes, ApplicationCreatio
   declare screenshotUrl: string | null;
 
   @BelongsTo(() => JobListing)
-  declare jobListing: JobListing;
+  declare jobListing: IJobListing;
 
   @BelongsTo(() => Resume)
-  declare resume: Resume | null;
+  declare resume: IResume | null;
 }

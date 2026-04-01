@@ -1,0 +1,493 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "AI Job Applier API",
+    "version": "1.0.0",
+    "description": "API for AI Job Applier platform"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "paths": {
+    "/applications": {
+      "get": {
+        "tags": [
+          "Applications"
+        ],
+        "summary": "List applications",
+        "description": "Returns a list of applications with optional result filter.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "result",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "APPLIED",
+                "FAILED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of applications"
+          }
+        }
+      }
+    },
+    "/applications/{id}": {
+      "get": {
+        "tags": [
+          "Applications"
+        ],
+        "summary": "Get single application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Application details"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Applications"
+        ],
+        "summary": "Update application decision or result",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "decision": {
+                    "type": "string",
+                    "enum": [
+                      "PENDING",
+                      "APPROVED",
+                      "REJECTED"
+                    ]
+                  },
+                  "result": {
+                    "type": "string",
+                    "enum": [
+                      "APPLIED",
+                      "FAILED"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Application updated"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "User login",
+        "description": "Authenticates the user and returns a session token.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "username",
+                  "password"
+                ],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login success"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "User logout",
+        "description": "Invalidate the user session.",
+        "responses": {
+          "200": {
+            "description": "Logout success"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Health check endpoint",
+        "responses": {
+          "200": {
+            "description": "Returns health status"
+          }
+        }
+      }
+    },
+    "/jobs/stats": {
+      "get": {
+        "summary": "Get dashboard statistics",
+        "description": "Returns counts of jobs in various stages.",
+        "responses": {
+          "200": {
+            "description": "Stats object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reviewCount": {
+                      "type": "integer"
+                    },
+                    "appliedCount": {
+                      "type": "integer"
+                    },
+                    "activeRolesCount": {
+                      "type": "integer"
+                    },
+                    "failedCount": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs": {
+      "get": {
+        "summary": "List job listings",
+        "description": "Returns paginated job listings with optional status and platform filters.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "FILTERED",
+                "REVIEW",
+                "APPROVED",
+                "REJECTED"
+              ]
+            },
+            "description": "Filter by job status"
+          },
+          {
+            "in": "query",
+            "name": "platform",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "naukri",
+                "indeed",
+                "wellfound",
+                "internshala"
+              ]
+            },
+            "description": "Filter by platform"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            },
+            "description": "Items per page (max 100)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of job listings"
+          }
+        }
+      }
+    },
+    "/jobs/{id}": {
+      "get": {
+        "summary": "Get a single job listing",
+        "description": "Returns a job listing by ID with the full job description text.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Job listing UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job listing details"
+          },
+          "404": {
+            "description": "Job listing not found"
+          }
+        }
+      }
+    },
+    "/resumes/{id}": {
+      "get": {
+        "tags": [
+          "Resumes"
+        ],
+        "summary": "Get single resume",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resume details"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Resumes"
+        ],
+        "summary": "Update resume content or trigger recompile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "texContent": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resume updated"
+          }
+        }
+      }
+    },
+    "/roles": {
+      "get": {
+        "summary": "List role configurations",
+        "description": "Returns all role configurations for job search filtering.",
+        "responses": {
+          "200": {
+            "description": "List of role configurations"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a role configuration",
+        "description": "Creates a new role configuration with keywords and ATS threshold.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "roleName",
+                  "keywords"
+                ],
+                "properties": {
+                  "roleName": {
+                    "type": "string",
+                    "example": "Backend Engineer"
+                  },
+                  "keywords": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "Node.js",
+                      "TypeScript",
+                      "Express"
+                    ]
+                  },
+                  "minAtsThreshold": {
+                    "type": "integer",
+                    "default": 60
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Role configuration created"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/roles/{id}": {
+      "patch": {
+        "summary": "Update a role configuration",
+        "description": "Partially updates an existing role configuration.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roleName": {
+                    "type": "string"
+                  },
+                  "keywords": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "minAtsThreshold": {
+                    "type": "integer"
+                  },
+                  "isActive": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Role configuration updated"
+          },
+          "404": {
+            "description": "Role configuration not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a role configuration",
+        "description": "Permanently deletes a role configuration.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role configuration deleted"
+          },
+          "404": {
+            "description": "Role configuration not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}

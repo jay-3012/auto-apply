@@ -1,5 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
 import { getJobs, getJobById } from '../../services/job.service.js';
+import { JobListing } from '../../db/models/job-listing.model.js';
+import { Application } from '../../db/models/application.model.js';
+import { JobStatus } from '#types/db.types.js';
+import { Sequelize } from 'sequelize';
 import { success } from '#utils/response.js';
 import { AppError } from '#utils/app-error.js';
 import { DEFAULT_PAGE, DEFAULT_PAGE_LIMIT } from '#config/constants.js';
@@ -42,6 +46,27 @@ export const getJob = async (req: Request, res: Response, next: NextFunction): P
     }
 
     success(res, job);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * GET /api/jobs/stats
+ * Returns job and application statistics.
+ */
+export const getDashboardStats = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const reviewCount = await JobListing.count({ where: { status: JobStatus.REVIEW } });
+    const appliedCount = await Application.count();
+    const pendingCount = await JobListing.count({ where: { status: JobStatus.PENDING } });
+    
+    success(res, {
+      reviewCount,
+      appliedCount,
+      pendingCount,
+      failedCount: 0 // Placeholder
+    });
   } catch (error) {
     next(error);
   }

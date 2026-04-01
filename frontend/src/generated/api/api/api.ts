@@ -1,0 +1,13 @@
+export * from './applications.service';
+import { ApplicationsService } from './applications.service';
+export * from './applications.serviceInterface';
+export * from './authentication.service';
+import { AuthenticationService } from './authentication.service';
+export * from './authentication.serviceInterface';
+export * from './default.service';
+import { DefaultService } from './default.service';
+export * from './default.serviceInterface';
+export * from './resumes.service';
+import { ResumesService } from './resumes.service';
+export * from './resumes.serviceInterface';
+export const APIS = [ApplicationsService, AuthenticationService, DefaultService, ResumesService];

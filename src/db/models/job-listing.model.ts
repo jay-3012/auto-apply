@@ -1,6 +1,7 @@
 import { Model, Table, Column, DataType, HasOne } from 'sequelize-typescript';
 import { JobStatus, Platform } from '#types/db.types.js';
 import { Application } from './application.model.js';
+import type { Application as IApplication } from './application.model.js';
 
 export interface JobListingAttributes {
   id: string;
@@ -54,5 +55,5 @@ export class JobListing extends Model<JobListingAttributes, JobListingCreationAt
   declare status: JobStatus;
 
   @HasOne(() => Application, 'jobId')
-  declare application: Application | null;
+  declare application: IApplication | null;
 }

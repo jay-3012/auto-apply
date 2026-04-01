@@ -1,4 +1,5 @@
 import { JobListing } from '../db/models/job-listing.model.js';
+import { Application } from '../db/models/application.model.js';
 import { JobStatus, Platform } from '#types/db.types.js';
 import type { GetJobsOptions, PaginatedResult } from '#types/scraper.types.js';
 import type { JobListingAttributes } from '../db/models/job-listing.model.js';
@@ -23,15 +24,20 @@ export const getJobs = async (options: GetJobsOptions): Promise<PaginatedResult<
     where.platform = options.platform as Platform;
   }
 
-  const { rows: data, count: total } = await JobListing.findAndCountAll({
+  const { rows, count: total } = await JobListing.findAndCountAll({
     where,
     limit,
     offset,
     order: [['createdAt', 'DESC']],
+    include: [{
+      model: Application,
+      as: 'application',
+      required: false,
+    }],
   });
 
   return {
-    data,
+    data: rows as any,
     pagination: {
       page,
       limit,
@@ -46,5 +52,11 @@ export const getJobs = async (options: GetJobsOptions): Promise<PaginatedResult<
  * Returns null if not found.
  */
 export const getJobById = async (id: string): Promise<JobListing | null> => {
-  return JobListing.findByPk(id);
+  return JobListing.findByPk(id, {
+    include: [{
+      model: Application,
+      as: 'application',
+      required: false,
+    }],
+  });
 };
